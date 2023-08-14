@@ -1,7 +1,7 @@
 //
 // Created by Ethan's Macbook on 8/2/23.
 //
-
+#include <iostream>
 #include "Global.h"
 
 
@@ -29,8 +29,12 @@ namespace Global{
         return Global::NPC == comparator;
     }
 
-    bool isPC(int comparator){
+     bool isPC(int comparator){
         return Global::PC == comparator;
+    }
+
+    void printRespect(){
+        std::cout << Global::RESPECT;
     }
 
 }

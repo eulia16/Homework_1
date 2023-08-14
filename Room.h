@@ -18,28 +18,11 @@ class Room{
 
 public:
 
+    std::vector<Creature> creatures;
+
     enum State{ CLEAN, HALF_DIRTY, DIRTY };
     enum Creature{ PC=0, ANIMAL=1, NPC=2 };
 
-
-    class Node{
-
-    public:
-
-        Node();
-        ~Node();
-        //next and prev node(creature)
-        Node *next, *prev;
-        Room::Creature type;
-        std::string name;
-
-    };
-    //instance sentinal head and tail nodes for beginning linked list associated w every room
-   Node *HEAD, *TAIL;
-
-
-
-   Node *creatures[MAX_CREATURES];
 
    //constructor/destructors
    Room();

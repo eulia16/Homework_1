@@ -1,0 +1,4 @@
+08-14-2023:
+have a decent amt of boiler plate code done, have to implement creature and its children classes
+to allow adding and removing of creatures from rooms. in rooms.h/.cpp we are stuck at adding and
+removing creatures until the creatures.h/.cpp and its children classes are implemented

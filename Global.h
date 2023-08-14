@@ -24,6 +24,9 @@ namespace Global {
 
     bool isPC(int comparator);
 
+    void printRespect();
+
+
 };
 
 

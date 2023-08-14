@@ -62,11 +62,7 @@
 
     //functionality of room
     void Room::addCreature(int creature){
-        auto *creatureNode = new Node();
-        creatureNode->type = (Room::Creature) creature;
-        creatureNode->name = Global::NAME;
-        Global::NAME++;
-        Room::insertNode(creatureNode);
+        Room::creatures.push_back(new Creature(creature));
 
     }
 
