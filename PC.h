@@ -9,7 +9,23 @@
 #include "Global.h"
 
 
-class PC {
+class PC : public Creature{
+
+
+public:
+
+    void happy_noise();
+
+
+
+    void sad_noise();
+
+
+    int get_creature_number();
+
+private:
+    int creature_number;
+
 
 };
 

@@ -54,12 +54,13 @@ int main() {
 
 //helper functions for main program
 
-void setRoomShit(Room *room, Room::State state, int tempN, int tempS, int tempW, int tempE){
+void setRoomShit(Room *room, Room::State state, int tempN, int tempS, int tempW, int tempE, int roomNumber){
     room->setState(state);
     room->setNorthNeighbor(tempN);
     room->setSouthNeighbor(tempS);
     room->setEastNeighbor(tempE);
     room->setWestNeighbor(tempW);
+    room->setRoomNumber(roomNumber);
 }
 
 void cleanupAllocatedMemory(Room *rooms){
@@ -82,17 +83,13 @@ void getRoomInformation(Room *rooms, int num_rooms){
     int tempState, tempN, tempS, tempW, tempE;
     for(int i=0; i<num_rooms; ++i){
         cout << "Please enter each rooms information" << endl;
-
-
         cin >> tempState >> tempN >> tempS >> tempE >> tempW;
         //initialize cast_state to allow creating room w proper state from enum
         auto cast_state = (Room::State) tempState;
-        setRoomShit(&rooms[i], cast_state, tempN, tempS, tempE, tempW);
+        setRoomShit(&rooms[i], cast_state, tempN, tempS, tempE, tempW, i);
         cout << "Room Information printed" << endl << rooms[i].getState()
              << rooms[i].getNorthNeighbor() << rooms[i].getSouthNeighbor() <<
              rooms[i].getWestNeighbor() << rooms[i].getEastNeighbor() << endl;
-
-
     }
 }
 

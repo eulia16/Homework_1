@@ -7,10 +7,16 @@ namespace Global {
     extern int RESPECT;
     extern int PC_LOCATION;
     extern int NAME;
-    extern v
-    enum {PC=0, ANIMAL=1, NPC=2};
+    extern bool PC_IS_IN_GAME;
+
+    //extern v
+    enum Creature {PC=0, ANIMAL=1, NPC=2};
 
     void increment_respect(int increment_value);
+
+    void pc_has_entered_game(bool pc_in_game);
+
+    bool PC_is_in_game();
 
     void decrement_respect(int decrement_value);
 

@@ -12,12 +12,17 @@
 class Creature {
 
 public:
-    //will be overridden for runtime polymorphism by children functions
-    virtual void happy_noise(){
-    }
 
-    virtual void sad_noise(){
-    }
+
+    //will be overridden for runtime polymorphism by children functions
+    virtual void happy_noise()=0;
+
+    virtual void sad_noise()=0;
+
+    virtual int get_creature_number()=0;
+
+private:
+    int creature_number;
 
 };
 

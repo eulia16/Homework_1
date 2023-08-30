@@ -3,14 +3,22 @@
 //
 #include <iostream>
 #include "Room.h"
+#include "Creature.h"
+#include "Animal.h"
+#include "NPC.h"
+#include "PC.h"
+#include "Global.h"
 
-//constructors/destructorst;
-[[maybe_unused]] Room::Room (State state, int north, int south, int west, int east){
+//constructors/destructors;
+[[maybe_unused]] Room::Room (State state, int north, int south, int west, int east, int room_number){
         this->state = state;
         this->north_neighbor = north;
         this->south_neighbor = south;
         this->east_neighbor = east;
         this->west_neighbor = west;
+        this->room_number = room_number;
+
+
     }
 
     Room::Room() {
@@ -20,7 +28,10 @@
 
     Room::~Room(){
         //delete all the creatures from the room when the game ends
-        delete[] *creatures;
+        for (auto& ptr : creatures) {
+            ptr.reset();
+        }
+
 
         std::cout << "Destructor was invoked" << std::endl;
     }
@@ -38,9 +49,11 @@
     void Room::setEastNeighbor(int east){
         this->east_neighbor = east;
     }
-
     void Room::setState(State passedState){
         this->state = passedState;
+    }
+    void Room::setRoomNumber(int room_number) {
+        this->room_number = room_number;
     }
 
     //getters
@@ -59,71 +72,57 @@
     int Room::getWestNeighbor(){
         return this->west_neighbor;
     }
+    int Room::getRoomNumber() {
+        return this->room_number;
+    }
 
     //functionality of room
-    void Room::addCreature(int creature){
-        Room::creatures.push_back(new Creature(creature));
+    void Room::addCreature(int creature) {
+        //check if room is full
+        if (this->creatures.size() == MAX_CREATURES_ALLOWED_IN_ROOM) {
+            std::cout << "There are already 10 creatures inside of room: " << this->getRoomNumber();
+            return;
+        }
 
+        if (creature == Global::Creature::ANIMAL)
+            this->creatures.push_back(std::make_unique<Animal>());
+
+        if (creature == Global::Creature::NPC)
+            this->creatures.push_back(std::make_unique<NPC>());
+        else
+            if(Global::PC_is_in_game())
+                std::cout << "The PC is already in the game in room: " << Global::PC_LOCATION;
+            else {
+                this->creatures.push_back(std::make_unique<PC>());
+                Global::pc_has_entered_game(true);
+                Global::update_pc_location(this->getRoomNumber());
+            }
     }
+
 
     void Room::removeCreature(int creature){
+        //this->creatures.erase()
+    }
+    void Room::addCreature(int creature, Global::Creature creatureType){
 
     }
-    void Room::addCreature(int creature, Room::Creature creatureType){
-
-    }
-    void Room::removeCreature(int creature, Room::Creature creatureType){
-
-    }
-
-
-
-
-//private abstraction methods of rooms for adding/searching/removing node(creatures)
-
-    void Room::insertNode(Room::Node *node) {
-        node->next = HEAD->next;
-        HEAD->next = node;
-        node->prev = HEAD;
-        node->next->prev  = node;
-    }
-
-    Room::Node *Room::deleteNode(Room::Node *node) {
-
-
+    void Room::removeCreature(int creature, Global::Creature creatureType){
 
     }
 
-    Room::Node *Room::deleteNode(std::string node){
-
-    }
-
-    Room::Node *Room::deleteNode(int creature){
-
-    }
-
-    Room::Node* Room::findNode(){
-
+        [[maybe_unused]] int Room::getNumberOfCreaturesInside(){
+        return this->creatures.size();
     }
 
 
-    void Room::printCreaturesInsideRoom(){
-
-    for(auto node : Room::creatures){
-        Room::Creature temp = node->type;
-        std::cout <<"Creature Name: "<<node->name << ", Creature Type: " << creatureTypeToString(temp);
-    }
-
-    }
-
-    std::string Room::creatureTypeToString(Room::Creature type){
+    std::string Room::creatureTypeToString(Global::Creature type){
 
     switch(type){
-        case Room::Creature::PC:
+        case Global::Creature::PC:
             return "PC";
-        case Room::Creature::ANIMAL:
+        case Global::Creature::ANIMAL:
             return "ANIMAL";
-        case Room::Creature::NPC:
+        case Global::Creature::NPC:
             return "NPC";
     }
 

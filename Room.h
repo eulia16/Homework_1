@@ -10,7 +10,7 @@
 #include "Global.h"
 #include <string>
 
-#define MAX_CREATURES 10
+#define MAX_CREATURES_ALLOWED_IN_ROOM 10
 
 
 class Room{
@@ -18,16 +18,16 @@ class Room{
 
 public:
 
-    std::vector<Creature> creatures;
+    //create vector of pointers to creatures to allow any type to be added to the vector
+    //use unique pointer so memory manages itself
+    std::vector<std::unique_ptr<Creature>> creatures;
 
     enum State{ CLEAN, HALF_DIRTY, DIRTY };
-    enum Creature{ PC=0, ANIMAL=1, NPC=2 };
-
 
    //constructor/destructors
    Room();
    ~Room();
-    [[maybe_unused]] Room (State state, int north, int south, int west, int east);
+    [[maybe_unused]] Room (State state, int north, int south, int west, int east, int roomNumber);
 
    //setters
     void setState(State passedState);
@@ -35,6 +35,7 @@ public:
     void setSouthNeighbor(int south);
     void setWestNeighbor(int west);
     void setEastNeighbor(int east);
+    void setRoomNumber(int room_number);
 
     //getters
     State getState();
@@ -42,38 +43,25 @@ public:
     int getSouthNeighbor();
     int getWestNeighbor();
     int getEastNeighbor();
+    int getRoomNumber();
 
     //methods for creatures
     void addCreature(int creature);
     void removeCreature(int creature);
-    void addCreature(int creature, Room::Creature creatureType);
-    void removeCreature(int creature, Room::Creature creatureType);
-    void containsAnimal(Room::Creature creatureType);
-    void containsNPC(Room::Creature creatureType);
+    void addCreature(int creature, Global::Creature creatureType);
+    void removeCreature(int creature, Global::Creature creatureType);
+    void containsAnimal(Global::Creature creatureType);
+    void containsNPC(Global::Creature creatureType);
     void printCreaturesInsideRoom();
+    int getNumberOfCreaturesInside();
     //static so this method can be used without needing instantiation of the class
-    static std::string creatureTypeToString(Creature type);
+    static std::string creatureTypeToString(Global::Creature type);
 
-
-
-
-
-
-
-//will follow a sentinal based head and tail doubly linked list data structure scheme to keep
-//track of the animals inside of each room, allowing for ease of removal and addition to a room
 
 private:
     State state;
-    int north_neighbor, south_neighbor, west_neighbor, east_neighbor;
+    int north_neighbor, south_neighbor, west_neighbor, east_neighbor, room_number;
 
-    //hidden abstraction methods for adding/deleting creatures
-
-    void insertNode(Node *node);
-    Node *deleteNode(Node* node);
-    Node *deleteNode(std::string node);
-    Node *deleteNode(int creature);
-    Node *findNode();
 
 
 };

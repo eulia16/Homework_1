@@ -18,7 +18,10 @@ public:
 
     void sad_noise();
 
+    int get_creature_number();
 
+private:
+    int creature_number;
 
 
 };

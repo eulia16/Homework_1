@@ -9,9 +9,20 @@ namespace Global{
     int RESPECT = 40;
     int PC_LOCATION;
     int NAME =0;
+    bool PC_IS_IN_GAME = false;
+
+
     //respect methods implemented
     void increment_respect(int increment_value){
         RESPECT = RESPECT + increment_value;
+    }
+
+    void pc_has_entered_game(bool pc_in_game){
+        PC_IS_IN_GAME = true;
+    }
+
+    bool PC_is_in_game(){
+        return PC_IS_IN_GAME;
     }
     void decrement_respect(int decrement_value){
         RESPECT = RESPECT - decrement_value;
@@ -22,15 +33,15 @@ namespace Global{
     }
     //maybe have global methods for isAnimal, isNPC, and isPC
     bool isAnimal(int comparator){
-        return Global::ANIMAL == comparator;
+        return Global::Creature::ANIMAL == comparator;
     }
 
     bool isNPC(int comparator){
-        return Global::NPC == comparator;
+        return Global::Creature::NPC == comparator;
     }
 
      bool isPC(int comparator){
-        return Global::PC == comparator;
+        return Global::Creature::PC == comparator;
     }
 
     void printRespect(){
