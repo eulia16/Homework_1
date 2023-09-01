@@ -68,10 +68,10 @@ void cleanupAllocatedMemory(Room *rooms){
 }
 
 int getNumberOfRooms(){
-    int num_rooms;
+    int num_rooms =-1;
     //num rooms  info
     while(num_rooms < 0 || num_rooms > 100) {
-        cout << "Please enter the nnumber of rooms(must be between 0 and 100 ): " << endl;
+        cout << "Please enter the number of rooms(must be between 0 and 100 ): " << endl;
         cin >> num_rooms;
         cout << "num_rooms: " << num_rooms << endl;
     }
@@ -86,7 +86,7 @@ void getRoomInformation(Room *rooms, int num_rooms){
         cin >> tempState >> tempN >> tempS >> tempE >> tempW;
         //initialize cast_state to allow creating room w proper state from enum
         auto cast_state = (Room::State) tempState;
-        setRoomShit(&rooms[i], cast_state, tempN, tempS, tempE, tempW, i);
+        setRoomShit(&rooms[i], cast_state, tempN, tempS, tempW, tempE, i);
         cout << "Room Information printed" << endl << rooms[i].getState()
              << rooms[i].getNorthNeighbor() << rooms[i].getSouthNeighbor() <<
              rooms[i].getWestNeighbor() << rooms[i].getEastNeighbor() << endl;
@@ -106,12 +106,15 @@ void getCreatureInformation(Room *rooms) {
         cout << "Enter another creatures information" << endl;
         cin >> creature_type >> creature_room;
         if (creature_type == Global::PC) {
-            cout << "PC will start in room: " << creature_room;
-            Global::PC_LOCATION = creature_room;
+            cout << "PC will start in room: " << creature_room << endl;
         }
         rooms[creature_room].addCreature(creature_type);
+        Creature* temp = rooms[creature_room].creatures->back();
+        temp->setCreatureNumber(i);
+        cout << "Creature " << temp->get_creature_number() << ", type:  " << temp->getType() << endl;
 
     }
+
 
 }
 

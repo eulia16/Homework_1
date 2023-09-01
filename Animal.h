@@ -14,11 +14,13 @@ class Animal : public Creature{
 public:
     void happy_noise();
 
-
-
     void sad_noise();
 
     int get_creature_number();
+
+    void setCreatureNumber(int creature_num);
+
+    int getType();
 
 private:
     int creature_number;

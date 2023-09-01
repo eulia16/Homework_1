@@ -9,16 +9,27 @@
 
 
 void NPC::happy_noise(){
-    std::cout << "test";
+    std::cout << "NPC makes happy noise, respect has been increased by 1" << std::endl;
+    Global::RESPECT++;
 }
 
 
 
 void NPC::sad_noise(){
-    std::cout << "test";
+    std::cout << "NPC makes sad noise, respect has been decreased by 1" << std::endl;
+    Global::RESPECT++;
 }
 
 
 int NPC::get_creature_number(){
-    std::cout << "test";
+    return this->creature_number;
+}
+
+
+void NPC::setCreatureNumber(int creature_num){
+    this->creature_number = creature_num;
+}
+
+int NPC::getType() {
+    return 2;
 }

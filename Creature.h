@@ -21,6 +21,10 @@ public:
 
     virtual int get_creature_number()=0;
 
+    virtual void setCreatureNumber(int creature_num)=0;
+
+    virtual int getType()=0;
+
 private:
     int creature_number;
 

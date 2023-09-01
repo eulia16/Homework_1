@@ -22,6 +22,10 @@ public:
 
     int get_creature_number();
 
+    void setCreatureNumber(int creature_num);
+
+    int getType();
+
 
 private:
     int creature_number;

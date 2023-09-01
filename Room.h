@@ -19,8 +19,7 @@ class Room{
 public:
 
     //create vector of pointers to creatures to allow any type to be added to the vector
-    //use unique pointer so memory manages itself
-    std::vector<std::unique_ptr<Creature>> creatures;
+    std::vector<Creature*> *creatures;
 
     enum State{ CLEAN, HALF_DIRTY, DIRTY };
 
@@ -47,9 +46,9 @@ public:
 
     //methods for creatures
     void addCreature(int creature);
-    void removeCreature(int creature);
-    void addCreature(int creature, Global::Creature creatureType);
-    void removeCreature(int creature, Global::Creature creatureType);
+    void removeCreaturePermanent(int creature);
+    void addCreature(Creature* creature);
+    Creature* removeCreature(int creature);
     void containsAnimal(Global::Creature creatureType);
     void containsNPC(Global::Creature creatureType);
     void printCreaturesInsideRoom();
@@ -61,6 +60,11 @@ public:
 private:
     State state;
     int north_neighbor, south_neighbor, west_neighbor, east_neighbor, room_number;
+    Room* north = nullptr;
+    Room* south = nullptr;
+    Room* east = nullptr;
+    Room* west = nullptr;
+
 
 
 
