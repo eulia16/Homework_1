@@ -11,13 +11,15 @@
 void NPC::happy_noise(){
     std::cout << "NPC makes happy noise, respect has been increased by 1" << std::endl;
     Global::RESPECT++;
+    std::cout << "Respect is now: " <<Global::RESPECT << std::endl;
 }
 
 
 
 void NPC::sad_noise(){
     std::cout << "NPC makes sad noise, respect has been decreased by 1" << std::endl;
-    Global::RESPECT++;
+    Global::RESPECT--;
+    std::cout << "Respect is now: " <<Global::RESPECT << std::endl;
 }
 
 

@@ -6,11 +6,10 @@
 namespace Global {
     extern int RESPECT;
     extern int PC_LOCATION;
-    extern int NAME;
     extern bool PC_IS_IN_GAME;
 
-    //extern v
     enum Creature {PC=0, ANIMAL=1, NPC=2};
+    enum State{ CLEAN, HALF_DIRTY, DIRTY };
 
     void increment_respect(int increment_value);
 
@@ -31,6 +30,8 @@ namespace Global {
     bool isPC(int comparator);
 
     void printRespect();
+
+    void printState(int state);
 
 
 };

@@ -13,13 +13,15 @@
 void Animal::happy_noise(){
     std::cout << "Animal makes happy noise, respect has been increased by 1";
     Global::RESPECT++;
+    std::cout << "Respect is now: " <<Global::RESPECT << std::endl;
 }
 
 
 
 void Animal::sad_noise(){
     std::cout << "Animal makes sad noise, respect has been decreased by 1";
-    Global::RESPECT++;
+    Global::RESPECT--;
+    std::cout << "Respect is now: " <<Global::RESPECT << std::endl;
 }
 
 

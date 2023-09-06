@@ -21,15 +21,15 @@ public:
     //create vector of pointers to creatures to allow any type to be added to the vector
     std::vector<Creature*> *creatures;
 
-    enum State{ CLEAN, HALF_DIRTY, DIRTY };
+    int north_neighbor, south_neighbor, west_neighbor, east_neighbor, room_number;
+
 
    //constructor/destructors
    Room();
    ~Room();
-    [[maybe_unused]] Room (State state, int north, int south, int west, int east, int roomNumber);
 
    //setters
-    void setState(State passedState);
+    void setState(Global::State passedState);
     void setNorthNeighbor(int north);
     void setSouthNeighbor(int south);
     void setWestNeighbor(int west);
@@ -37,7 +37,7 @@ public:
     void setRoomNumber(int room_number);
 
     //getters
-    State getState();
+    Global::State getState();
     int getNorthNeighbor();
     int getSouthNeighbor();
     int getWestNeighbor();
@@ -49,21 +49,21 @@ public:
     void removeCreaturePermanent(int creature);
     void addCreature(Creature* creature);
     Creature* removeCreature(int creature);
-    void containsAnimal(Global::Creature creatureType);
-    void containsNPC(Global::Creature creatureType);
-    void printCreaturesInsideRoom();
-    int getNumberOfCreaturesInside();
+    Creature* getPCFromRoom();
+    bool containsNPC();
+    bool containsAnimal();
+    //helper functions for printing room info
+    void printCreaturesInRoom();
+    void printNeighbors();
     //static so this method can be used without needing instantiation of the class
     static std::string creatureTypeToString(Global::Creature type);
 
 
+
+
+
 private:
-    State state;
-    int north_neighbor, south_neighbor, west_neighbor, east_neighbor, room_number;
-    Room* north = nullptr;
-    Room* south = nullptr;
-    Room* east = nullptr;
-    Room* west = nullptr;
+    Global::State state;
 
 
 

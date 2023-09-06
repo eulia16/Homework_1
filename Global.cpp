@@ -48,4 +48,14 @@ namespace Global{
         std::cout << Global::RESPECT;
     }
 
+    void printState(int state){
+        if(state  == Global::State::CLEAN)
+            std::cout << "Clean";
+        if(state  == Global::State::DIRTY)
+            std::cout << "Dirty";
+        if(state  == Global::State::HALF_DIRTY)
+            std::cout << "Half-Dirty";
+        std::cout << std::endl;
+    }
+
 }
