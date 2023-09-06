@@ -35,3 +35,7 @@ void NPC::setCreatureNumber(int creature_num){
 int NPC::getType() {
     return 2;
 }
+
+Creature* NPC::getThis(){
+    return this;
+}

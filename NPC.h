@@ -26,8 +26,11 @@ public:
 
     int getType();
 
+    Creature* getThis();
 
-private:
+
+
+        private:
     int creature_number;
 
 };

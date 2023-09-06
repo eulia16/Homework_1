@@ -22,10 +22,10 @@ void enterGame(Room* room);
 //game commands
 void look(Room* rooms);
 void help();
-void pcNorth(Room* rooms);
-void pcSouth(Room* rooms);
-void pcWest(Room* rooms);
-void pcEast(Room* rooms);
+void North(Room* rooms, int creatureNumber);
+void South(Room* rooms, int creatureNumber);
+void West(Room* rooms, int creatureNumber);
+void East(Room* rooms, int creatureNumber);
 void clean(Room* rooms);
 void dirty(Room* rooms);
 
@@ -102,22 +102,31 @@ void enterGame(Room* room){
         if(colon_present != std::string::npos) {
             cout << "colon present" << endl;
             string creature = command.substr(0, colon_present);
+            //convert creature string to int
+            int intValue=0;
+            try {
+                intValue = std::stoi(creature); // Convert the string to an integer
+                std::cout << "Integer value: " << intValue << std::endl;
+            } catch (const std::exception& e) {
+                std::cerr << "Error: " << e.what() << "\nYou Entered a malformed command." <<  std::endl;
+                continue;
+            }
             string newCommand = command.substr(colon_present+1, command.length());
 
             std::cout << "Part 1: " << creature << std::endl;
             std::cout << "Part 2: " << newCommand << std::endl;
 
             if(newCommand == "north"){
-                pcNorth(room);
+                North(room, intValue);
             }
             if(newCommand == "south"){
-                pcSouth(room);
+                South(room, intValue);
             }
             if(newCommand == "west"){
-                pcWest(room);
+                West(room, intValue);
             }
             if(newCommand == "east"){
-                pcEast(room);
+                East(room, intValue);
             }
         }
 
@@ -131,16 +140,16 @@ void enterGame(Room* room){
                 look(room);
             }
             if(command == "north"){
-                pcNorth(room);
+                North(room, Global::getNumber());
             }
             if(command == "south"){
-                pcSouth(room);
+                South(room, Global::getNumber());
             }
             if(command == "west"){
-                pcWest(room);
+                West(room, Global::getNumber());
             }
             if(command == "east"){
-                pcEast(room);
+                East(room, Global::getNumber());
             }
             if(command == "clean"){
                 clean(room);
@@ -173,28 +182,38 @@ void clean(Room* room){
     else
         room[Global::PC_LOCATION].setState(Global::State::CLEAN);
 
-    //for each creature in the room, make respective happy/sad noise
+
+    int numNPCs=0;
     for(auto creature : *room[Global::PC_LOCATION].creatures){
-        if(creature->getType() == Global::Creature::NPC)
+        if(creature->getType() == Global::Creature::NPC) {
+            cout << "Creature " << creature->get_creature_number() << ", Type: " <<creature->getType() <<  ", Has been added to the npc list that will be deleted" << endl;
             creature->sad_noise();
-        else
+            numNPCs++;
+        }
+        else {
+            cout << "Creature " << creature->get_creature_number() << ", Type: " <<creature->getType()<< " NOT ADDED"<< endl;
             creature->happy_noise();
+        }
+
     }
     //if room is fully clean, all npc's must leave to other rooms
     if(room[Global::PC_LOCATION].containsNPC() && room[Global::PC_LOCATION].getState() == Global::State::CLEAN){
-        for(auto creature : *room[Global::PC_LOCATION].creatures){
-            if(creature->getType() == Global::Creature::NPC){
-                //get the creature from the room
-                int randomRoom = getRandomRoom(room);
-                room[randomRoom].addCreature(room[Global::PC_LOCATION].removeCreature(creature->get_creature_number()));
-                //then we will change the state of the room the creature just transferred to in case it is also clean
-                if(room[randomRoom].getState() == Global::State::CLEAN )
-                    room[randomRoom].setState(Global::State::HALF_DIRTY);
-                cout <<"creature " << creature->get_creature_number() << "will leave to room: " << randomRoom << endl;
-            }
+
+        for(int i =0; i<numNPCs; ++i){
+            cout << "Inside loop to delete creatures" << endl;
+            //get the creature from the room
+            int randomRoom = getRandomRoom(room);
+            auto NPC = room[Global::PC_LOCATION].getNextNPCFromRoom();
+            room[randomRoom].addCreature(NPC);
+            //then we will change the state of the room the creature just transferred to in case it is also clean
+            if(room[randomRoom].getState() == Global::State::CLEAN)
+                room[randomRoom].setState(Global::State::HALF_DIRTY);
+            cout <<"creature " << NPC->get_creature_number() << " will leave to room: " << randomRoom << endl;
+
 
         }
     }
+
 
 }
 
@@ -210,28 +229,37 @@ void dirty(Room* room){
     else
         room[Global::PC_LOCATION].setState(Global::State::DIRTY);
 
-    //for each creature in the room, make respective happy/sad noise
+    int numAnimals=0;
     for(auto creature : *room[Global::PC_LOCATION].creatures){
-        if(creature->getType() == Global::Creature::ANIMAL)
+        if(creature->getType() == Global::Creature::ANIMAL) {
+            cout << "Creature " << creature->get_creature_number() << ", Type: " <<creature->getType() <<  ", Has been added to the Animal list that will be deleted" << endl;
             creature->sad_noise();
-        else
+            numAnimals++;
+        }
+        else {
+            cout << "Creature " << creature->get_creature_number() << ", Type: " <<creature->getType()<< " NOT ADDED"<< endl;
             creature->happy_noise();
+        }
+
     }
     //if room is fully clean, all npc's must leave to other rooms
     if(room[Global::PC_LOCATION].containsAnimal() && room[Global::PC_LOCATION].getState() == Global::State::DIRTY){
-        for(auto creature : *room[Global::PC_LOCATION].creatures){
-            if(creature->getType() == Global::Creature::ANIMAL){
-                //get the creature from the room
-                int randomRoom = getRandomRoom(room);
-                room[randomRoom].addCreature(room[Global::PC_LOCATION].removeCreature(creature->get_creature_number()));
-                //then we will change the state of the room the creature just transferred to in case it is also clean
-                if(room[randomRoom].getState() == Global::State::DIRTY)
-                    room[randomRoom].setState(Global::State::HALF_DIRTY);
-                cout <<"creature " << creature->get_creature_number() << "will leave to room: " << randomRoom << endl;
-            }
+
+        for(int i =0; i<numAnimals; ++i){
+            cout << "Inside loop to delete creatures" << endl;
+            //get the creature from the room
+            int randomRoom = getRandomRoom(room);
+            auto Animal = room[Global::PC_LOCATION].getNextAnimalFromRoom();
+            room[randomRoom].addCreature(Animal);
+            //then we will change the state of the room the creature just transferred to in case it is also clean
+            if(room[randomRoom].getState() == Global::State::CLEAN)
+                room[randomRoom].setState(Global::State::HALF_DIRTY);
+            cout <<"creature " << Animal->get_creature_number() << " will leave to room: " << randomRoom << endl;
+
 
         }
     }
+
 
 
 }
@@ -254,63 +282,80 @@ int getRandomRoom(Room* room){
 
 //movement of pc between rooms function
 
-void pcNorth(Room* room){
+void North(Room* room, int creatureNumber){
     if(room[Global::PC_LOCATION].getNorthNeighbor() == -1) {
         cout << "There is no neighbor to the North"<< endl;
         return;
     }
     else {
-        cout << "PC location before: " << Global::PC_LOCATION << endl;
-        cout << "PC has been obtained from the room " << endl;
-        cout << "PC has been moved to the north room " << endl;
-        room[room[Global::PC_LOCATION].getNorthNeighbor()].addCreature(room[Global::PC_LOCATION].getPCFromRoom());
-        Global::PC_LOCATION = room[Global::PC_LOCATION].getNorthNeighbor();
-        cout << "PC location after: " << Global::PC_LOCATION << endl;
+        //move PC like normal
+        if(Global::getNumber() == creatureNumber) {
+            cout << "PC has been selected to move rooms, printing for confirmation: " << Global::PC_LOCATION << creatureNumber<< endl;
+            room[room[Global::PC_LOCATION].getNorthNeighbor()].addCreature(room[Global::PC_LOCATION].getPCFromRoom());
+            Global::PC_LOCATION = room[Global::PC_LOCATION].getNorthNeighbor();
+            cout << "PC location after: " << Global::PC_LOCATION << endl;
+        }
+        else{
+            room[room[Global::PC_LOCATION].getNorthNeighbor()].addCreature(room[Global::PC_LOCATION].removeCreature(creatureNumber));
+            cout << "Creature "<< creatureNumber << " has been moved North. " << endl;
+        }
     }
 }
 
-void pcSouth(Room* room){
+void South(Room* room, int creatureNumber){
     if(room[Global::PC_LOCATION].getSouthNeighbor() == -1) {
         cout << "There is no neighbor to the South"<< endl;
         return;
     }
     else {
-        cout << "PC location before: " << Global::PC_LOCATION << endl;
-        cout << "PC has been obtained from the room " << endl;
-        cout << "PC has been moved to the south room " << endl;
-        room[room[Global::PC_LOCATION].getSouthNeighbor()].addCreature(room[Global::PC_LOCATION].getPCFromRoom());
-        Global::PC_LOCATION = room[Global::PC_LOCATION].getSouthNeighbor();
-        cout << "PC location after: " << Global::PC_LOCATION << endl;
+        if(Global::getNumber() == creatureNumber) {
+            cout << "PC has been selected to move rooms, printing for confirmation: " << Global::PC_LOCATION << creatureNumber<< endl;
+            room[room[Global::PC_LOCATION].getSouthNeighbor()].addCreature(room[Global::PC_LOCATION].getPCFromRoom());
+            Global::PC_LOCATION = room[Global::PC_LOCATION].getSouthNeighbor();
+            cout << "PC location after: " << Global::PC_LOCATION << endl;
+        }
+        else{
+            room[room[Global::PC_LOCATION].getSouthNeighbor()].addCreature(room[Global::PC_LOCATION].removeCreature(creatureNumber));
+            cout << "Creature "<< creatureNumber << " has been moved South. " << endl;
+        }
     }
 }
 
-void pcEast(Room* room){
+void East(Room* room, int creatureNumber){
     if(room[Global::PC_LOCATION].getEastNeighbor() == -1) {
         cout << "There is no neighbor to the East"<< endl;
         return;
     }
     else {
-        cout << "PC location before: " << Global::PC_LOCATION << endl;
-        cout << "PC has been obtained from the room " << endl;
-        cout << "PC has been moved to the east room " << endl;
-        room[room[Global::PC_LOCATION].getEastNeighbor()].addCreature(room[Global::PC_LOCATION].getPCFromRoom());
-        Global::PC_LOCATION = room[Global::PC_LOCATION].getEastNeighbor();
-        cout << "PC location after: " << Global::PC_LOCATION << endl;
+        if(Global::getNumber() == creatureNumber) {
+            cout << "PC has been selected to move rooms, printing for confirmation: " << Global::PC_LOCATION << creatureNumber<< endl;
+            room[room[Global::PC_LOCATION].getEastNeighbor()].addCreature(room[Global::PC_LOCATION].getPCFromRoom());
+            Global::PC_LOCATION = room[Global::PC_LOCATION].getEastNeighbor();
+            cout << "PC location after: " << Global::PC_LOCATION << endl;
+        }
+        else{
+            room[room[Global::PC_LOCATION].getEastNeighbor()].addCreature(room[Global::PC_LOCATION].removeCreature(creatureNumber));
+            cout << "Creature "<< creatureNumber << " has been moved East. " << endl;
+        }
     }
 }
 
-void pcWest(Room* room){
+void West(Room* room, int creatureNumber){
     if(room[Global::PC_LOCATION].getWestNeighbor() == -1) {
         cout << "There is no neighbor to the West"<< endl;
         return;
     }
     else {
-        cout << "PC location before: " << Global::PC_LOCATION << endl;
-        cout << "PC has been obtained from the room " << endl;
-        cout << "PC has been moved to the West room " << endl;
-        room[room[Global::PC_LOCATION].getWestNeighbor()].addCreature(room[Global::PC_LOCATION].getPCFromRoom());
-        Global::PC_LOCATION = room[Global::PC_LOCATION].getWestNeighbor();
-        cout << "PC location after: " << Global::PC_LOCATION << endl;
+        if(Global::getNumber() == creatureNumber) {
+            cout << "PC has been selected to move rooms, printing for confirmation: " << Global::PC_LOCATION << creatureNumber<< endl;
+            room[room[Global::PC_LOCATION].getWestNeighbor()].addCreature(room[Global::PC_LOCATION].getPCFromRoom());
+            Global::PC_LOCATION = room[Global::PC_LOCATION].getWestNeighbor();
+            cout << "PC location after: " << Global::PC_LOCATION << endl;
+        }
+        else{
+            room[room[Global::PC_LOCATION].getWestNeighbor()].addCreature(room[Global::PC_LOCATION].removeCreature(creatureNumber));
+            cout << "Creature "<< creatureNumber << " has been moved West. " << endl;
+        }
     }
 }
 
@@ -386,6 +431,7 @@ void getCreatureInformation(Room *rooms) {
         cin >> creature_type >> creature_room;
         if (creature_type == Global::PC) {
             cout << "PC will start in room: " << creature_room << endl;
+            Global::setNumber(i);
         }
         rooms[creature_room].addCreature(creature_type);
         Creature* temp = rooms[creature_room].creatures->back();

@@ -204,6 +204,27 @@
         }
     }
 
+    Creature* Room::getNextNPCFromRoom(){
+        for(auto creature : *this->creatures){
+            if(creature->getType() == Global::Creature::NPC){
+                return this->removeCreature(creature->get_creature_number());
+            }
+        }
+        std::cout << "There are no NPC's left in this room." << std::endl;
+        return nullptr;
+    }
+
+    Creature* Room::getNextAnimalFromRoom() {
+        for(auto creature : *this->creatures){
+            if(creature->getType() == Global::Creature::ANIMAL){
+                return this->removeCreature(creature->get_creature_number());
+            }
+        }
+        std::cout << "There are no Animals's left in this room." << std::endl;
+        return nullptr;
+
+    }
+
 
 
     std::string Room::creatureTypeToString(Global::Creature type){

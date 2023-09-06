@@ -16,6 +16,12 @@ namespace Global{
     void increment_respect(int increment_value){
         RESPECT = RESPECT + increment_value;
     }
+    void setNumber(int name){
+        NAME = name;
+    }
+    int getNumber(){
+        return NAME;
+    }
 
     void pc_has_entered_game(bool pc_in_game){
         PC_IS_IN_GAME = true;
@@ -30,18 +36,6 @@ namespace Global{
     //pc location methods implemented
     void update_pc_location(int location){
         PC_LOCATION = location;
-    }
-    //maybe have global methods for isAnimal, isNPC, and isPC
-    bool isAnimal(int comparator){
-        return Global::Creature::ANIMAL == comparator;
-    }
-
-    bool isNPC(int comparator){
-        return Global::Creature::NPC == comparator;
-    }
-
-     bool isPC(int comparator){
-        return Global::Creature::PC == comparator;
     }
 
     void printRespect(){

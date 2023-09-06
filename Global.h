@@ -17,17 +17,13 @@ namespace Global {
 
     bool PC_is_in_game();
 
+    void setNumber(int name);
+    int getNumber();
+
     void decrement_respect(int decrement_value);
 
     //pc location methods implemented
     void update_pc_location(int location);
-
-    //maybe have global methods for isAnimal, isNPC, and isPC
-    bool isAnimal(int comparator);
-
-    bool isNPC(int comparator);
-
-    bool isPC(int comparator);
 
     void printRespect();
 

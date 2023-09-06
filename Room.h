@@ -50,6 +50,8 @@ public:
     void addCreature(Creature* creature);
     Creature* removeCreature(int creature);
     Creature* getPCFromRoom();
+    Creature* getNextNPCFromRoom();
+    Creature* getNextAnimalFromRoom();
     bool containsNPC();
     bool containsAnimal();
     //helper functions for printing room info
