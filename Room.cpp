@@ -225,6 +225,10 @@
 
     }
 
+   int Room::getNumCreaturesInRoom(){
+    return this->creatures->size();
+}
+
 
 
     std::string Room::creatureTypeToString(Global::Creature type){

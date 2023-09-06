@@ -16,6 +16,10 @@ public:
 
     void sad_noise();
 
+    void large_happy_noise();
+
+    void large_sad_noise();
+
     int get_creature_number();
 
     void setCreatureNumber(int creature_num);

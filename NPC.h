@@ -15,10 +15,11 @@ public:
 
     void happy_noise();
 
-
-
     void sad_noise();
 
+    void large_happy_noise();
+
+    void large_sad_noise();
 
     int get_creature_number();
 

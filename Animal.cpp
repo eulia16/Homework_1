@@ -11,7 +11,7 @@
 
 
 void Animal::happy_noise(){
-    std::cout << "Animal makes happy noise, respect has been increased by 1";
+    std::cout << "Animal makes happy noise, respect has been increased by 1"<< std::endl;
     Global::RESPECT++;
     std::cout << "Respect is now: " <<Global::RESPECT << std::endl;
 }
@@ -19,8 +19,20 @@ void Animal::happy_noise(){
 
 
 void Animal::sad_noise(){
-    std::cout << "Animal makes sad noise, respect has been decreased by 1";
+    std::cout << "Animal makes sad noise, respect has been decreased by 1"<< std::endl;
     Global::RESPECT--;
+    std::cout << "Respect is now: " <<Global::RESPECT << std::endl;
+}
+
+void Animal::large_happy_noise(){
+    std::cout << "Animal makes a very happy noise, respect has been increased by 3"<< std::endl;
+    Global::RESPECT += 3;
+    std::cout << "Respect is now: " <<Global::RESPECT << std::endl;
+}
+
+void Animal::large_sad_noise(){
+    std::cout << "Animal makes a very sad noise, respect has been decreased by 3"<< std::endl;
+    Global::RESPECT -= 3;
     std::cout << "Respect is now: " <<Global::RESPECT << std::endl;
 }
 

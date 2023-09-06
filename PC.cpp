@@ -9,14 +9,26 @@
 
 
 void PC::happy_noise(){
-    std::cout << "The PC will never be happy";
+    std::cout << "The PC will never be happy"<< std::endl;
 }
 
 
 
 void PC::sad_noise(){
-    std::cout << "The PC will never be sad";
+    std::cout << "The PC will never be sad"<< std::endl;
 }
+
+
+void PC::large_happy_noise(){
+    std::cout << "never used" << std::endl;
+
+}
+
+void PC::large_sad_noise(){
+    std::cout << "never used"<< std::endl;
+
+}
+
 
 
 int PC::get_creature_number(){

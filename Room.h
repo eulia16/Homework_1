@@ -54,6 +54,7 @@ public:
     Creature* getNextAnimalFromRoom();
     bool containsNPC();
     bool containsAnimal();
+    int getNumCreaturesInRoom();
     //helper functions for printing room info
     void printCreaturesInRoom();
     void printNeighbors();
