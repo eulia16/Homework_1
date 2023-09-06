@@ -27,6 +27,7 @@ void pcSouth(Room* rooms);
 void pcWest(Room* rooms);
 void pcEast(Room* rooms);
 void clean(Room* rooms);
+void dirty(Room* rooms);
 
 //helper functions
 int getRandomRoom(Room* rooms);
@@ -40,16 +41,12 @@ int main() {
     //yet remain a fixed size;
     Room *rooms = new Room[num_rooms];
 
-
     //obtain room information from user
     getRoomInformation(rooms, num_rooms);
     cout << "outside function " << endl;
 
     //read creature information from user
     getCreatureInformation(rooms);
-
-    //some test shit for adding/removing creatures from rooms;
-     //testShit(rooms);
 
     //enter main game loop
     enterGame(rooms);
@@ -104,7 +101,24 @@ void enterGame(Room* room){
 
         if(colon_present != std::string::npos) {
             cout << "colon present" << endl;
+            string creature = command.substr(0, colon_present);
+            string newCommand = command.substr(colon_present+1, command.length());
 
+            std::cout << "Part 1: " << creature << std::endl;
+            std::cout << "Part 2: " << newCommand << std::endl;
+
+            if(newCommand == "north"){
+                pcNorth(room);
+            }
+            if(newCommand == "south"){
+                pcSouth(room);
+            }
+            if(newCommand == "west"){
+                pcWest(room);
+            }
+            if(newCommand == "east"){
+                pcEast(room);
+            }
         }
 
         else {
@@ -115,7 +129,6 @@ void enterGame(Room* room){
             }
             if(command == "look"){
                 look(room);
-
             }
             if(command == "north"){
                 pcNorth(room);
@@ -133,7 +146,7 @@ void enterGame(Room* room){
                 clean(room);
             }
             if(command == "dirty"){
-                //dirty();
+                dirty(room);
             }
             if(command == "exit"){
                 cleanupAllocatedMemory(room);
@@ -149,6 +162,12 @@ void enterGame(Room* room){
 
 //clean and dirty methods for pc
 void clean(Room* room){
+    if(room[Global::PC_LOCATION].getState() == Global::State::CLEAN){
+        cout << "The clean command does not work on clean rooms" << endl;
+        return;
+    }
+
+
     if(room[Global::PC_LOCATION].getState() == Global::State::DIRTY)
         room[Global::PC_LOCATION].setState(Global::State::HALF_DIRTY);
     else
@@ -169,12 +188,51 @@ void clean(Room* room){
                 int randomRoom = getRandomRoom(room);
                 room[randomRoom].addCreature(room[Global::PC_LOCATION].removeCreature(creature->get_creature_number()));
                 //then we will change the state of the room the creature just transferred to in case it is also clean
-                room[randomRoom].setState(Global::State::HALF_DIRTY);
+                if(room[randomRoom].getState() == Global::State::CLEAN )
+                    room[randomRoom].setState(Global::State::HALF_DIRTY);
                 cout <<"creature " << creature->get_creature_number() << "will leave to room: " << randomRoom << endl;
             }
 
         }
     }
+
+}
+
+
+void dirty(Room* room){
+    if(room[Global::PC_LOCATION].getState() == Global::State::DIRTY){
+        cout << "The dirty command does not work on dirty rooms" << endl;
+        return;
+    }
+
+    if(room[Global::PC_LOCATION].getState() == Global::State::CLEAN)
+        room[Global::PC_LOCATION].setState(Global::State::HALF_DIRTY);
+    else
+        room[Global::PC_LOCATION].setState(Global::State::DIRTY);
+
+    //for each creature in the room, make respective happy/sad noise
+    for(auto creature : *room[Global::PC_LOCATION].creatures){
+        if(creature->getType() == Global::Creature::ANIMAL)
+            creature->sad_noise();
+        else
+            creature->happy_noise();
+    }
+    //if room is fully clean, all npc's must leave to other rooms
+    if(room[Global::PC_LOCATION].containsAnimal() && room[Global::PC_LOCATION].getState() == Global::State::DIRTY){
+        for(auto creature : *room[Global::PC_LOCATION].creatures){
+            if(creature->getType() == Global::Creature::ANIMAL){
+                //get the creature from the room
+                int randomRoom = getRandomRoom(room);
+                room[randomRoom].addCreature(room[Global::PC_LOCATION].removeCreature(creature->get_creature_number()));
+                //then we will change the state of the room the creature just transferred to in case it is also clean
+                if(room[randomRoom].getState() == Global::State::DIRTY)
+                    room[randomRoom].setState(Global::State::HALF_DIRTY);
+                cout <<"creature " << creature->get_creature_number() << "will leave to room: " << randomRoom << endl;
+            }
+
+        }
+    }
+
 
 }
 
