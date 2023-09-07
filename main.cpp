@@ -222,6 +222,17 @@ void Clean(Room* room, int creatureNumber){
 
             //*********//
             auto NPC = room[Global::PC_LOCATION].getNextNPCFromRoom();
+            if(randomRoom == -1){
+                cout << "You have forced creature " << NPC->get_creature_number() << " out of the room, you will regret this..."<< endl;
+                delete NPC;
+                //have every creature remaining in the room shame the player for his transgressions
+                for(auto creature : *room[Global::PC_LOCATION].creatures){
+                    creature->sad_noise();
+                }
+                return;
+
+            }
+
             room[randomRoom].addCreature(NPC);
             //then we will change the state of the room the creature just transferred to in case it is also clean
             if(room[randomRoom].getState() == Global::State::CLEAN)
@@ -273,7 +284,19 @@ void Dirty(Room* room, int creatureNumber){
             cout << "Inside loop to delete creatures" << endl;
             //get the creature from the room
             int randomRoom = getRandomRoom(room);
+            //check to see if random room returned -1(no neighbors available)
+            //if so we will force the creature out of the game
             auto Animal = room[Global::PC_LOCATION].getNextAnimalFromRoom();
+            if(randomRoom == -1){
+                cout << "You have forced creature " << Animal->get_creature_number() << " out of the room, you will regret this..."<< endl;
+                //have every creature remaining in the room shame the player for his transgressions
+                delete Animal;
+                for(auto creature : *room[Global::PC_LOCATION].creatures){
+                    creature->sad_noise();
+                }
+                return;
+
+            }
             room[randomRoom].addCreature(Animal);
             //then we will change the state of the room the creature just transferred to in case it is also clean
             if(room[randomRoom].getState() == Global::State::CLEAN)
@@ -291,14 +314,16 @@ void Dirty(Room* room, int creatureNumber){
 int getRandomRoom(Room* room){
     std::vector<int> *neighborHolder = new std::vector<int>;
     //add them to vector if they exist
-    if(room[Global::PC_LOCATION].getNorthNeighbor() != -1)
+    if(room[Global::PC_LOCATION].getNorthNeighbor() != -1 && room[room[Global::PC_LOCATION].getNorthNeighbor()].getNumCreaturesInRoom() < 10)
         neighborHolder->push_back(room[Global::PC_LOCATION].getNorthNeighbor());
-    if(room[Global::PC_LOCATION].getSouthNeighbor() != -1)
+    if(room[Global::PC_LOCATION].getSouthNeighbor() != -1 && room[room[Global::PC_LOCATION].getSouthNeighbor()].getNumCreaturesInRoom() < 10)
         neighborHolder->push_back(room[Global::PC_LOCATION].getSouthNeighbor());
-    if(room[Global::PC_LOCATION].getEastNeighbor() != -1)
+    if(room[Global::PC_LOCATION].getEastNeighbor() != -1 && room[room[Global::PC_LOCATION].getEastNeighbor()].getNumCreaturesInRoom() < 10)
         neighborHolder->push_back(room[Global::PC_LOCATION].getEastNeighbor());
-    if(room[Global::PC_LOCATION].getWestNeighbor() != -1)
+    if(room[Global::PC_LOCATION].getWestNeighbor() != -1 && room[room[Global::PC_LOCATION].getWestNeighbor()].getNumCreaturesInRoom() < 10)
         neighborHolder->push_back(room[Global::PC_LOCATION].getWestNeighbor());
+    if(neighborHolder->empty())
+        return -1;
 
     return (neighborHolder->at(rand() % neighborHolder->size()));
 
