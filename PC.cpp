@@ -9,24 +9,22 @@
 
 
 void PC::happy_noise(){
-    std::cout << "The PC will never be happy"<< std::endl;
+    //std::cout << "The PC will never be happy"<< std::endl;
 }
 
 
 
 void PC::sad_noise(){
-    std::cout << "The PC will never be sad"<< std::endl;
+    //std::cout << "The PC will never be sad"<< std::endl;
 }
 
 
 void PC::large_happy_noise(){
-    std::cout << "never used" << std::endl;
-
+    //std::cout << "never used" << std::endl;
 }
 
 void PC::large_sad_noise(){
-    std::cout << "never used"<< std::endl;
-
+    //std::cout << "never used"<< std::endl;
 }
 
 

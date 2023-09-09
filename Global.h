@@ -11,22 +11,12 @@ namespace Global {
     enum Creature {PC=0, ANIMAL=1, NPC=2};
     enum State{ CLEAN, HALF_DIRTY, DIRTY };
 
-    void increment_respect(int increment_value);
-
     void pc_has_entered_game(bool pc_in_game);
-
     bool PC_is_in_game();
-
     void setNumber(int name);
     int getNumber();
-
-    void decrement_respect(int decrement_value);
-
     //pc location methods implemented
     void update_pc_location(int location);
-
-    void printRespect();
-
     void printState(int state);
 
 

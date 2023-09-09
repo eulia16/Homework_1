@@ -46,7 +46,6 @@ public:
 
     //methods for creatures
     void addCreature(int creature);
-    void removeCreaturePermanent(int creature);
     void addCreature(Creature* creature);
     Creature* removeCreature(int creature);
     Creature* getPCFromRoom();

@@ -13,39 +13,35 @@
 
 
     Room::Room() {
-        std::cout << "Constructor was invoked" << std::endl;
-        std::cout << "trinity waz here" << std::endl;
         this->creatures = new std::vector<Creature*> ;
     }
 
     Room::~Room(){
         //delete all the creatures from the room when the game ends
-        delete this->creatures;
+        //need to delete each element of the vector of creatures as its a vector of pointers
+        for(auto creature : *this->creatures){
+            delete creature;
+        }
+        this->creatures->clear();
+
         std::cout << "Destructor for room << " << this->room_number<<" was invoked" << std::endl;
     }
 
     //setters
     void Room::setNorthNeighbor(int north){
-    std::cout << "setting north neighbor to: " << north <<std::endl;
         this->north_neighbor = north;
         std::cout << north_neighbor <<std::endl;
     }
     void Room::setSouthNeighbor(int south){
-        std::cout << "setting south neighbor to: " << south <<std::endl;
-
         this->south_neighbor = south;
         std::cout << south_neighbor <<std::endl;
     }
     void Room::setWestNeighbor(int west){
-        std::cout << "setting west neighbor to: " << west <<std::endl;
-
         this->west_neighbor = west;
         std::cout << west_neighbor <<std::endl;
 
     }
     void Room::setEastNeighbor(int east){
-        std::cout << "setting east neighbor to: " << east <<std::endl;
-
         this->east_neighbor = east;
         std::cout << east_neighbor <<std::endl;
     }
@@ -159,18 +155,6 @@
     }
 
 
-    //appears to be working correctly
-    void Room::removeCreaturePermanent(int creature){
-        int ctr=0;
-        for(auto temp : *this->creatures){
-            if(temp->get_creature_number() == creature) {
-                std::cout << "Creature" <<temp->get_creature_number() << ": has been permanently removed from the game(what a loser)" << std::endl;
-                this->creatures->erase(creatures->begin() + ctr);
-                return;
-            }
-            ctr++;
-        }
-    }
     void Room::addCreature(Creature* creature){
     if(this->creatures->size() > 9){
         std::cout << "There are already 10 creatures in this room, find another room";
@@ -183,11 +167,9 @@
     for(auto temp : *this->creatures){
         if(temp->getType() == Global::Creature::PC){
             auto PCHolder = removeCreature(temp->get_creature_number());
-            std::cout << "returned PC" << std::endl;
             return PCHolder;
         }
     }
-        std::cout << "PC was not found" << std::endl;
     return nullptr;
     }
 
@@ -196,7 +178,6 @@
         int ctr=0;
         for(auto temp : *this->creatures){
             if(temp->get_creature_number() == creature) {
-                std::cout << "Creature" <<temp->get_creature_number() << ": has been returned for transferring to other rooms" << std::endl;
                 this->creatures->erase(creatures->begin() + ctr);
                 return temp;
             }
@@ -230,7 +211,6 @@
 }
 
 
-
     std::string Room::creatureTypeToString(Global::Creature type){
 
     switch(type){
@@ -243,11 +223,3 @@
     }
 
     }
-
-
-
-
-
-
-
-

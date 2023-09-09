@@ -11,11 +11,6 @@ namespace Global{
     int NAME =0;
     bool PC_IS_IN_GAME = false;
 
-
-    //respect methods implemented
-    void increment_respect(int increment_value){
-        RESPECT = RESPECT + increment_value;
-    }
     void setNumber(int name){
         NAME = name;
     }
@@ -30,17 +25,12 @@ namespace Global{
     bool PC_is_in_game(){
         return PC_IS_IN_GAME;
     }
-    void decrement_respect(int decrement_value){
-        RESPECT = RESPECT - decrement_value;
-    }
+
     //pc location methods implemented
     void update_pc_location(int location){
         PC_LOCATION = location;
     }
 
-    void printRespect(){
-        std::cout << Global::RESPECT;
-    }
 
     void printState(int state){
         if(state  == Global::State::CLEAN)
